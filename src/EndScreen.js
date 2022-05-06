@@ -3,7 +3,7 @@ const Resources = Loader.shared.resources;
 
 const Texts = {
   YOU_WIN: 'Congratulations you win!',
-  YOU_LOOSE: 'Game over, you lose!'
+  YOU_LOOSE: 'Game over, you lose!',
 };
 
 export default class EndScreen extends Container {
@@ -15,9 +15,9 @@ export default class EndScreen extends Container {
   }
 
   /**
-   * 
-   * @param {int} score 
-   * @param {boolean} win 
+   *
+   * @param {int} score
+   * @param {boolean} win
    */
   show(score, win) {
     this.visible = true;
@@ -36,17 +36,17 @@ export default class EndScreen extends Container {
 
   _createText() {
     const style = new TextStyle({
-        fontFamily: "Comic Sans MS, sans-serif",
-        fontSize: 30,
-        fontWeight: "bold",
-        fill: "white",
-      });
+      fontFamily: 'Comic Sans MS, sans-serif',
+      fontSize: 30,
+      fontWeight: 'bold',
+      fill: 'white',
+    });
 
     this.label = new Text(`${Texts.YOU_WIN}`, style);
     this.label.x = 350;
     this.label.y = 300;
 
-    this.score = new Text(`Score: 0`, style)
+    this.score = new Text(`Score: 0`, style);
     this.score.x = 440;
     this.score.y = 350;
 
@@ -56,6 +56,7 @@ export default class EndScreen extends Container {
   _createBackground() {
     const backgroundTexture = Resources.endBackground.texture;
     const background = new Sprite(backgroundTexture);
+
     this.addChild(background);
   }
 }

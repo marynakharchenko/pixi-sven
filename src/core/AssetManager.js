@@ -1,5 +1,5 @@
 import { Howl } from 'howler';
-import {Loader} from 'pixi.js';
+import { Loader } from 'pixi.js';
 import config from '../config';
 
 const context = require.context('../assets', true, /\.(jpg|png|wav|mp3)$/im);
@@ -73,7 +73,6 @@ class AssetManager {
      * @return {Promise} Resolved when the assets files are downloaded and parsed into texture objects
      */
   loadImages(images = {}, progressCallback = () => {}) {
-
     for (const [img, url] of Object.entries(images)) {
       Loader.shared.add(img, url);
     }

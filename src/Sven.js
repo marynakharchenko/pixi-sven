@@ -8,14 +8,13 @@ export default class Sven extends Entity {
 
   hump(callback) {
     this.isHumping = true;
-    this.anim.textures = this.animations['hump' + this.direction];
+    this.anim.textures = this.animations[`hump${this.direction}`];
     this.anim.gotoAndPlay(0);
-    
+
     this.anim.onComplete = () => {
       this.anim.onComplete = null; // Detach the listener
       this.isHumping = false;
       callback();
     };
-
   }
 }

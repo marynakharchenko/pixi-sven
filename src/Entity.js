@@ -1,39 +1,40 @@
-import {Loader, AnimatedSprite} from 'pixi.js';
+import { Loader, AnimatedSprite } from 'pixi.js';
 import gsap from 'gsap';
 
 const Resources = Loader.shared.resources;
 const DIRECTIONS = ['Up', 'Down', 'Left', 'Right'];
 
-export default class Entity  {
+export default class Entity {
   constructor(animations) {
-      this.animations = [];
+    this.animations = [];
 
-      const randomIndex = Math.floor(Math.random() * DIRECTIONS.length);
-      this.direction = DIRECTIONS[randomIndex];
+    const randomIndex = Math.floor(Math.random() * DIRECTIONS.length);
 
-      this.moving = false;
+    this.direction = DIRECTIONS[randomIndex];
 
-      this.prepareAnimations(animations);
+    this.moving = false;
+
+    this.prepareAnimations(animations);
   }
 
   /**
-   * 
+   *
    * @param {{}} animations containing all animations info
    */
   prepareAnimations(animations) {
-    for (let animKey in animations) {
+    for (const animKey in animations) {
       const animationTextures = [];
-      
+
       animations[animKey].forEach((sprite) => {
-        animationTextures.push(Resources[sprite].texture)
+        animationTextures.push(Resources[sprite].texture);
       });
       this.animations[animKey] = animationTextures;
     }
   }
 
   /**
-   * 
-   * @param {x,y} position coordinates 
+   *
+   * @param {x,y} position coordinates
    */
   async init(position) {
     this.anim = new AnimatedSprite(this.animations[`stand${this.direction}`]);
@@ -45,7 +46,7 @@ export default class Entity  {
   }
 
   /**
-   * 
+   *
    * @param {String} direction 'Up', 'Down' etc.
    */
   standStill(direction = this.direction) {
@@ -56,8 +57,8 @@ export default class Entity  {
   }
 
   /**
-   * 
-   * @param {{x, y}} target coordinates 
+   *
+   * @param {{x, y}} target coordinates
    * @param {String} direction 'Up', 'Down' etc.
    */
   async move(target, direction) {
@@ -66,7 +67,7 @@ export default class Entity  {
     // Adjust the new direction
     this.direction = direction;
     // Adjust the animation based on the direction
-    this.anim.textures = this.animations['walk' + direction];
+    this.anim.textures = this.animations[`walk${direction}`];
     // Play the animation
     this.anim.gotoAndPlay(0);
 
@@ -74,9 +75,9 @@ export default class Entity  {
       duration: 0.5,
       x: target.x,
       y: target.y,
-      ease: "none"
-  });
-    
+      ease: 'none',
+    });
+
     this.moving = false;
   }
 }
