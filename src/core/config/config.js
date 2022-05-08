@@ -17,6 +17,8 @@ export default {
   game: {
     width: size * 3,
     height: size * 3,
+    tileWidth: 100,
+    tileHeight: 100,
     drag: false,
     pinch: true,
     decelerate: true,
