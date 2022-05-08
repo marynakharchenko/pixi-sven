@@ -1,3 +1,5 @@
+import config from './config';
+
 const E = 0; // Empty
 const W = 1; // Wall - tree or end of map
 const T = 2; // Teleport - puddle or lake
@@ -23,14 +25,14 @@ const LEVEL1 = [
 
 export default class Map {
   constructor() {
-    this.offsetX = 350;
-    this.offsetY = -190;
-    this.tileWidth = 65;
-    this.tileHeight = 65;
+    this.offsetX = config.game.width / 3 + 100;
+    this.offsetY = config.game.height / 3 + 100;
+    this.tileWidth = 120;
+    this.tileHeight = 120;
 
     this.isoY = 0.7; // tile positions appear skewed
 
-    this.rotation = 45 * (Math.PI / 180); // grid is rotated 45 degrees clockwise
+    this.rotation = 0;
 
     this.IDS = {
       EMPTY: E,
@@ -118,7 +120,7 @@ export default class Map {
   }
 
   outOfBounds({ row, col }) {
-    return row < 0 || col < 0 || row > 13 || col > 11;
+    return row < 0 || col < 0 || row > 25 || col > 25;
   }
 
   collide({ row, col }) {

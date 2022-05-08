@@ -8,6 +8,7 @@ import gsap from 'gsap';
 import ScoreBoard from './ScoreBoard';
 import Timer from './Timer';
 import EndScreen from './EndScreen';
+import config from './config';
 // Import the sounds
 import Assets from './core/AssetManager';
 
@@ -30,7 +31,11 @@ export default class Game extends Container {
   async start() {
     this._attachKeyboardListeners();
 
-    this.addChild(Sprite.from('background'));
+    const background = Sprite.from('background');
+    background.width = config.game.width;
+    background.height = config.game.height;
+
+    this.addChild(background);
     this.addChild(this._scoreBoard.score);
     this.addChild(this._timer.timerText);
     this._createSven();
@@ -48,6 +53,8 @@ export default class Game extends Container {
 
     this._sven = new Sven(svenAnimations);
     this._sven.init(svenCoords);
+    window.viewport.follow(this._sven.anim, { radius: 100 });
+
     this.addChild(this._sven.anim);
   }
 
