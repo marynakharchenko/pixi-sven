@@ -1,11 +1,8 @@
 import { Howl } from 'howler';
 import { Loader } from 'pixi.js';
-import config from '../config/config';
 
-const context = require.context('../../assets', true, /\.(jpg|png|wav|mp3)$/im);
-
-const IMG_EXTENSIONS = ['jpeg', 'jpg', 'png'];
-const SOUND_EXTENSIONS = ['wav', 'ogg', 'm4a', 'mp3'];
+const contextImage = require.context('../../assets/images', true, /\.(jpg|png)$/im);
+const contextSound = require.context('../../assets/sounds', true, /\.(wav|mp3)$/im);
 
 /**
  * Global asset manager to help streamline asset usage in your game.
@@ -152,20 +149,22 @@ class AssetManager {
    * @private
    */
   _importAssets() {
-    context.keys().forEach((filename) => {
-      let [, id, ext] = filename.split('.'); // eslint-disable-line prefer-const
-      const url = context(filename);
+    contextImage.keys().forEach((filename) => {
+      let [, id] = filename.split('.'); // eslint-disable-line prefer-const
+      const url = contextImage(filename);
 
       id = id.substring(1);
       this._assets[id] = url;
+      this._images[id] = url;
+    });
 
-      if (IMG_EXTENSIONS.indexOf(ext) > -1) {
-        this._images[id] = url;
-      }
+    contextSound.keys().forEach((filename) => {
+      let [, id] = filename.split('.'); // eslint-disable-line prefer-const
+      const url = contextSound(filename);
 
-      if (SOUND_EXTENSIONS.indexOf(ext) > -1) {
-        this._sounds[id] = url;
-      }
+      id = id.substring(1);
+      this._assets[id] = url;
+      this._sounds[id] = url;
     });
   }
 }
