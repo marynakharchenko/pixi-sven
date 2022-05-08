@@ -57,7 +57,8 @@ export default class Game extends Container {
 
     this._sven = new Sven(svenAnimations);
     this._sven.init(svenCoords);
-    viewport.follow(this._sven.anim, { radius: 100 });
+
+    viewport.follow(this._sven.anim);
 
     this.addChild(this._sven.anim);
   }
@@ -104,11 +105,15 @@ export default class Game extends Container {
     if (directionKey) {
       const direction = directionKey.replace('Arrow', '');
 
-      return this._svenMove(direction);
+      this._svenMove(direction);
+
+      return;
     }
 
     if (this._pressedKeys.includes('Space')) {
-      return this._svenHump();
+      this._svenHump();
+
+      return;
     }
 
     this._sven.standStill();
@@ -127,7 +132,7 @@ export default class Game extends Container {
     this._map.setTileOnMap(oldPos, this._map.IDS.EMPTY);
     this._map.setTileOnMap(newPos, this._map.IDS.SVEN);
 
-    this._svenAction();
+    return this._svenAction();
   }
 
   _svenHump() {
@@ -160,11 +165,15 @@ export default class Game extends Container {
       if (sheep.humpedCount >= 4) {
         this._removeSheep(sheep, () => {
           if (this._herd.length === 0) return this._onEnd();
+
+          return this._herd;
         });
       }
 
       this._svenAction();
     });
+
+    return sheep.humpedCount;
   }
 
   _removeSheep(sheep, callback) {
@@ -199,7 +208,11 @@ export default class Game extends Container {
     const win = this._herd.length === 0;
     // Play Win or Lose sounds
 
-    win === true ? Assets.sounds.win.play() : Assets.sounds.lose.play();
+    if (win === true) {
+      Assets.sounds.win.play();
+    } else {
+      Assets.sounds.lose.play();
+    }
     // Fade out the background sound
     Assets.sounds.background.fade(1, 0, 200);
     this._endScreen.show(score, win);

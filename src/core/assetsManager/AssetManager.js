@@ -1,5 +1,5 @@
 import { Howl } from 'howler';
-import { Loader } from 'pixi.js';
+import { Loader, Texture } from 'pixi.js';
 
 const contextImage = require.context('../../assets/images', true, /\.(jpg|png)$/im);
 const contextSound = require.context('../../assets/sounds', true, /\.(wav|mp3)$/im);
@@ -89,7 +89,7 @@ class AssetManager {
     const prepare = renderer.plugins.prepare;
 
     for (const [img] of Object.entries(images)) {
-      prepare.add(PIXI.Texture.from(img));
+      prepare.add(Texture.from(img));
     }
 
     return new Promise(prepare.upload.bind(prepare));

@@ -88,8 +88,8 @@ export default class Map {
     const y = row * this.tileHeight;
 
     // coordinates after rotation
-    let xT = x * Math.cos(this.rotation) - y * Math.sin(this.rotation);
-    let yT = y * Math.cos(this.rotation) + x * Math.sin(this.rotation);
+    let xT = (x * Math.cos(this.rotation)) - (y * Math.sin(this.rotation));
+    let yT = (y * Math.cos(this.rotation)) + (x * Math.sin(this.rotation));
 
     // offset into visible area
     xT += this.offsetX;

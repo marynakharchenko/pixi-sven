@@ -14,7 +14,7 @@ export default class Timer {
   }
 
   get secondsLeft() {
-    const seconds = this._levelSeconds - this.minutesLeft * 60;
+    const seconds = this._levelSeconds - (this.minutesLeft * 60);
 
     if (seconds < 10) return `0${seconds}`;
 
@@ -22,7 +22,7 @@ export default class Timer {
   }
 
   start(onCountDownEnd) {
-    // Start an interval to coundown the seconds
+    // Start an interval to countdown the seconds
     this.countDown = setInterval(() => {
       if (this._levelSeconds === 0) {
         onCountDownEnd();
@@ -32,6 +32,8 @@ export default class Timer {
 
       this._levelSeconds--;
       this.timerText.text = `${this.minutesLeft}:${this.secondsLeft}`;
+
+      return this._levelSeconds;
     }, 1000);
   }
 

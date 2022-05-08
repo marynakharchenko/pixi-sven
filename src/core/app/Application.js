@@ -1,4 +1,4 @@
-import { Sprite, Application } from 'pixi.js';
+import { Application } from 'pixi.js';
 
 import config from '../config/config';
 import viewport from '../viewport/viewport';

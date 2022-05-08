@@ -12,7 +12,7 @@ export default {
     worldHeight: size * 3,
     isHorizontal,
     left,
-    top
+    top,
   },
   game: {
     width: size * 3,
