@@ -14,6 +14,9 @@ export default class GameApplication extends Application {
     super(config.view);
 
     this.config = config;
+    this.renderer.view.style.position = 'absolute';
+    this.renderer.view.style.top = `${config.view.top}px`;
+    this.renderer.view.style.left = `${config.view.left}px`;
     Assets.renderer = this.renderer;
 
     this.setupViewport();

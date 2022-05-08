@@ -1,14 +1,22 @@
+const isHorizontal = window.innerWidth > window.innerHeight;
+const size = isHorizontal ? window.innerHeight : window.innerWidth;
+const left = (window.innerWidth - size) / 2;
+const top = (window.innerHeight - size) / 2;
+
 export default {
   view: {
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: size,
+    height: size,
     backgroundColor: 0x000000,
-    worldWidth: window.innerWidth * 3,
-    worldHeight: window.innerHeight * 3,
+    worldWidth: size * 3,
+    worldHeight: size * 3,
+    isHorizontal,
+    left,
+    top
   },
   game: {
-    width: window.innerWidth * 3,
-    height: window.innerHeight * 3,
+    width: size * 3,
+    height: size * 3,
     drag: false,
     pinch: true,
     decelerate: true,
