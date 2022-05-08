@@ -1,14 +1,17 @@
 import { Container, Sprite } from 'pixi.js';
+import gsap from 'gsap';
+
 import svenAnimations from './svenAnimations';
 import sheepAnimations from './sheepAnimations';
 import Entity from './Entity';
 import Map from './Map';
 import Sven from './Sven';
-import gsap from 'gsap';
 import ScoreBoard from './ScoreBoard';
 import Timer from './Timer';
 import EndScreen from './EndScreen';
+
 import config from './config';
+import viewport from './core/viewport';
 // Import the sounds
 import Assets from './core/AssetManager';
 
@@ -53,7 +56,7 @@ export default class Game extends Container {
 
     this._sven = new Sven(svenAnimations);
     this._sven.init(svenCoords);
-    window.viewport.follow(this._sven.anim, { radius: 100 });
+    viewport.follow(this._sven.anim, { radius: 100 });
 
     this.addChild(this._sven.anim);
   }

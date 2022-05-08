@@ -1,7 +1,8 @@
 import { Sprite, Application } from 'pixi.js';
+
 import config from '../config';
+import viewport from './viewport';
 import Game from '../Game';
-import { Viewport } from 'pixi-viewport';
 import Assets from './AssetManager';
 
 /**
@@ -46,26 +47,9 @@ export default class GameApplication extends Application {
      * @return {PIXI.Application}
      */
   setupViewport() {
-    const viewport = new Viewport({
-      screenWidth: this.config.view.width,
-      screenHeight: this.config.view.height,
-      worldWidth: this.config.view.worldWidth,
-      worldHeight: this.config.view.worldHeight,
-      // the interaction module is important for wheel to work properly when renderer.view is placed or scaled
-      interaction: this.renderer.plugins.interaction,
-    });
-
     document.body.appendChild(this.view);
-
     this.stage.addChild(viewport);
-
-    if (this.config.game.drag) viewport.drag();
-    if (this.config.game.pinch) viewport.pinch();
-    if (this.config.game.wheel) viewport.wheel();
-    if (this.config.game.decelerate) viewport.decelerate();
-
     this.viewport = viewport;
-    window.viewport = viewport;
   }
 }
 
