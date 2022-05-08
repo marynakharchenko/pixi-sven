@@ -1,19 +1,19 @@
 import { Container, Sprite } from 'pixi.js';
 import gsap from 'gsap';
 
-import svenAnimations from './svenAnimations';
-import sheepAnimations from './sheepAnimations';
-import Entity from './Entity';
-import Map from './Map';
-import Sven from './Sven';
-import ScoreBoard from './ScoreBoard';
-import Timer from './Timer';
-import EndScreen from './EndScreen';
+import svenAnimations from '../animations/svenAnimations';
+import sheepAnimations from '../animations/sheepAnimations';
+import Entity from '../entities/Entity';
+import Map from '../entities/Map';
+import Sven from '../entities/Sven';
+import ScoreBoard from '../entities/ScoreBoard';
+import Timer from '../entities/Timer';
+import EndScreen from '../entities/EndScreen';
 
-import config from './config';
-import viewport from './core/viewport';
+import config from '../config/config';
+import viewport from '../viewport/viewport';
 // Import the sounds
-import Assets from './core/AssetManager';
+import Assets from '../assetsManager/AssetManager';
 
 /**
  * Main game stage, manages scenes/levels.
@@ -35,6 +35,7 @@ export default class Game extends Container {
     this._attachKeyboardListeners();
 
     const background = Sprite.from('background');
+
     background.width = config.game.width;
     background.height = config.game.height;
 

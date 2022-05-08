@@ -1,13 +1,13 @@
 import { Sprite, Application } from 'pixi.js';
 
-import config from '../config';
-import viewport from './viewport';
-import Game from '../Game';
-import Assets from './AssetManager';
+import config from '../config/config';
+import viewport from '../viewport/viewport';
+import Game from '../game/Game';
+import Assets from '../assetsManager/AssetManager';
 
 /**
  * Game entry point. Holds the game's viewport
- * All configurations are described in src/config.js
+ * All configurations are described in src/config/config.js
  */
 export default class GameApplication extends Application {
   constructor() {

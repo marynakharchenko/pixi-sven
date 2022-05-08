@@ -1,6 +1,6 @@
 import { Viewport } from 'pixi-viewport';
 
-import config from '../config';
+import config from '../config/config';
 
 const viewport = new Viewport({
   screenWidth: config.view.width,

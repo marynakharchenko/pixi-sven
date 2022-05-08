@@ -1,4 +1,4 @@
-import config from './config';
+import config from '../config/config';
 
 const E = 0; // Empty
 const W = 1; // Wall - tree or end of map
