@@ -1,11 +1,11 @@
 import { Container, Sprite } from 'pixi.js';
 import gsap from 'gsap';
 
-import svenAnimations from '../animations/svenAnimations';
-import sheepAnimations from '../animations/sheepAnimations';
-import Entity from '../entities/Entity';
+import patronAnimations from '../animations/patronAnimations';
+import mineAnimations from '../animations/mineAnimations';
 import Map from '../entities/Map';
-import Sven from '../entities/Sven';
+import Patron from '../entities/characters/Patron';
+import Mine from '../entities/characters/Mine';
 import ScoreBoard from '../entities/ScoreBoard';
 import Timer from '../entities/Timer';
 import EndScreen from '../entities/EndScreen';
@@ -42,7 +42,7 @@ export default class Game extends Container {
     this.addChild(background);
     this.addChild(this._scoreBoard.score);
     this.addChild(this._timer.timerText);
-    this._createSven();
+    this._createPatron();
     this._createHerd();
     this.addChild(this._endScreen);
     this._timer.start(() => this._onEnd());
@@ -51,33 +51,36 @@ export default class Game extends Container {
     Assets.sounds.background.play();
   }
 
-  _createSven() {
-    const svenMapPos = this._map.posById(this._map.IDS.SVEN)[0];
-    const svenCoords = this._map.coordsFromPos(svenMapPos);
+  _createPatron() {
+    const patronMapPos = this._map.posById(this._map.IDS.PATRON)[0];
+    const patronCoords = this._map.coordsFromPos(patronMapPos);
 
-    this._sven = new Sven(svenAnimations);
-    this._sven.init(svenCoords);
+    this._patron = new Patron(patronAnimations);
+    this._patron.init(patronCoords, config.game.tileWidth, config.game.tileHeight);
 
-    viewport.follow(this._sven.anim);
+    viewport.follow(this._patron.anim);
 
-    this.addChild(this._sven.anim);
+    this.addChild(this._patron.anim);
   }
 
   _createHerd() {
-    const sheepPositions = this._map.posById(this._map.IDS.SHEEP);
+    const minePositions = this._map.posById(this._map.IDS.MINE);
 
-    sheepPositions.forEach((sheepPosition) => {
-      const sheepCoords = this._map.coordsFromPos(sheepPosition);
-      const sheep = new Entity(sheepAnimations);
+    minePositions.forEach((minePosition) => {
+      const mineCoords = this._map.coordsFromPos(minePosition);
+      const mine = new Mine(mineAnimations);
 
-      sheep.init(sheepCoords);
+      mineCoords.x = mineCoords.x + (config.game.tileWidth / 3);
+      mineCoords.y = mineCoords.y + (config.game.tileHeight / 3);
 
-      sheep.col = sheepPosition.col;
-      sheep.row = sheepPosition.row;
-      sheep.humpedCount = 0;
+      mine.init(mineCoords, config.game.tileWidth / 3, config.game.tileHeight / 3);
 
-      this.addChild(sheep.anim);
-      this._herd.push(sheep);
+      mine.col = minePosition.col;
+      mine.row = minePosition.row;
+      mine.humpedCount = 0;
+
+      this.addChild(mine.anim);
+      this._herd.push(mine);
     });
   }
 
@@ -90,94 +93,95 @@ export default class Game extends Container {
     if (this._pressedKeys.includes(e.code)) return;
 
     this._pressedKeys.push(e.code);
-    this._svenAction();
+    this._patronAction();
   }
 
   _onKeyUp(e) {
     this._pressedKeys.splice(this._pressedKeys.indexOf(e.code), 1); // no checks ftw
   }
 
-  _svenAction() {
-    if (this._sven.moving) return;
+  _patronAction() {
+    if (this._patron.moving) return;
 
     const directionKey = this._pressedKeys.find((k) => ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(k));
 
     if (directionKey) {
       const direction = directionKey.replace('Arrow', '');
 
-      this._svenMove(direction);
+      this._patronMove(direction);
 
       return;
     }
 
     if (this._pressedKeys.includes('Space')) {
-      this._svenHump();
+      this._patronHump();
 
       return;
     }
 
-    this._sven.standStill();
+    this._patron.standStill();
   }
 
-  async _svenMove(direction) {
-    const oldPos = this._map.posById(this._map.IDS.SVEN)[0];
+  async _patronMove(direction) {
+    const oldPos = this._map.posById(this._map.IDS.PATRON)[0];
     const newPos = this._map.getDestination(oldPos, direction);
 
-    if (this._map.outOfBounds(newPos) || this._map.collide(newPos)) return this._sven.standStill(direction);
+    if (this._map.outOfBounds(newPos) || this._map.collide(newPos)) return this._patron.standStill(direction);
 
     const targetPos = this._map.coordsFromPos(newPos);
 
-    await this._sven.move(targetPos, direction);
+    await this._patron.move(targetPos, direction);
 
     this._map.setTileOnMap(oldPos, this._map.IDS.EMPTY);
-    this._map.setTileOnMap(newPos, this._map.IDS.SVEN);
+    this._map.setTileOnMap(newPos, this._map.IDS.PATRON);
 
-    return this._svenAction();
+    return this._patronAction();
   }
 
-  _svenHump() {
-    const svenDirection = this._sven.direction;
-    const svenPos = this._map.posById(this._map.IDS.SVEN)[0];
-    const targetPos = this._map.getDestination(svenPos, svenDirection);
+  _patronHump() {
+    const patronDirection = this._patron.direction;
+    const patronPos = this._map.posById(this._map.IDS.PATRON)[0];
+    const targetPos = this._map.getDestination(patronPos, patronDirection);
 
-    const hitSheep = this._map.getTile(targetPos) === this._map.IDS.SHEEP;
+    const hitmine = this._map.getTile(targetPos) === this._map.IDS.MINE;
 
-    if (!hitSheep) return this._sven.standStill();
+    if (!hitmine) return this._patron.standStill();
 
-    const sheep = this._herd.find((s) => s.row === targetPos.row && s.col === targetPos.col);
+    const mine = this._herd.find((s) => s.row === targetPos.row && s.col === targetPos.col);
 
-    if (this._sven.direction !== sheep.direction) return this._sven.standStill();
+    // remove direction
+    // if (this._patron.direction !== mine.direction) return this._patron.standStill();
 
-    if (this._sven.isHumping) return this._sven.standStill();
+    if (this._patron.isHumping) return this._patron.standStill();
 
-    if (sheep.humpedCount >= 4) return this._sven.standStill();
+    if (mine.humpedCount >= 4) return this._patron.standStill();
 
-    sheep.anim.visible = false;
+    mine.anim.visible = false;
 
     this._scoreBoard.update(3); // 3 points
     // Play the hump sound
     if (!Assets.sounds.hump.playing()) Assets.sounds.hump.play();
 
-    this._sven.hump(() => {
-      sheep.humpedCount++;
-      sheep.anim.visible = true;
-      this._sven.standStill();
-      if (sheep.humpedCount >= 4) {
-        this._removeSheep(sheep, () => {
+    this._patron.hump(() => {
+      mine.humpedCount++;
+      mine.anim.visible = true;
+      this._patron.standStill();
+      if (mine.humpedCount >= 4) {
+        this._removeMine(mine, () => {
           if (this._herd.length === 0) return this._onEnd();
 
           return this._herd;
         });
       }
 
-      this._svenAction();
+      this._patronAction();
     });
 
-    return sheep.humpedCount;
+    return mine.humpedCount;
   }
 
-  _removeSheep(sheep, callback) {
-    gsap.to(sheep.anim, {
+  _removeMine(mine, callback) {
+    gsap.to(mine.anim, {
       alpha: 0.4,
       duration: 0.5,
       repeat: 3,
@@ -186,18 +190,18 @@ export default class Game extends Container {
         // Play the smoke sound
         Assets.sounds.puffSmoke.play();
 
-        sheep.anim.textures = sheep.animations.disappear;
-        sheep.anim.gotoAndPlay(0);
-        sheep.anim.onComplete = () => {
+        mine.anim.textures = mine.animations.disappear;
+        mine.anim.gotoAndPlay(0);
+        mine.anim.onComplete = () => {
           // Play the point sound
           Assets.sounds.point.play();
-          const sheepIndex = this._herd.indexOf(sheep);
+          const mineIndex = this._herd.indexOf(mine);
 
-          this._herd.splice(sheepIndex, 1);
-          this.removeChild(sheep.anim);
-          this._map.setTileOnMap({ row: sheep.row, col: sheep.col }, this._map.IDS.EMPTY);
+          this._herd.splice(mineIndex, 1);
+          this.removeChild(mine.anim);
+          this._map.setTileOnMap({ row: mine.row, col: mine.col }, this._map.IDS.EMPTY);
           callback();
-          sheep.anim.onComplete = null; // Detach the listener
+          mine.anim.onComplete = null; // Detach the listener
         };
       },
     });

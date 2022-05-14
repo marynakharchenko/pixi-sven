@@ -1,15 +1,15 @@
 export default {
   standLeft: [
-    'svenLeft',
+    'patronLeft',
   ],
   standRight: [
-    'svenRight',
+    'patronRight',
   ],
   standUp: [
-    'svenUp',
+    'patronUp',
   ],
   standDown: [
-    'svenDown',
+    'patronDown',
   ],
   walkLeft: [
     'walkLeft1',

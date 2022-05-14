@@ -1,6 +1,6 @@
 import Entity from './Entity';
 
-export default class Sven extends Entity {
+export default class Patron extends Entity {
   constructor(config, animations) {
     super(config, animations);
     this.isHumping = false;

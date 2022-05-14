@@ -35,14 +35,19 @@ export default class Entity {
   /**
    *
    * @param {x,y} position coordinates
+   * @param width width
+   * @param height height
    */
-  async init(position) {
+  async init(position, width, height) {
     this.anim = new AnimatedSprite(this.animations[`stand${this.direction}`]);
     this.anim.position = position;
     // Adjust animation speed
     this.anim.animationSpeed = 0.2;
     // Don't loop it at initial state
     this.anim.loop = false;
+    // Set with and height
+    if (width) this.anim.width = width;
+    if (height) this.anim.height = height;
   }
 
   /**
