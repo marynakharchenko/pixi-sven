@@ -28,7 +28,7 @@ export default class Game extends Container {
     this._scoreBoard = new ScoreBoard();
     this._timer = new Timer();
     this._endScreen = new EndScreen();
-    this._herd = [];
+    this._mines = [];
   }
 
   async start() {
@@ -43,7 +43,7 @@ export default class Game extends Container {
     this.addChild(this._scoreBoard.score);
     this.addChild(this._timer.timerText);
     this._createPatron();
-    this._createHerd();
+    this._createMines();
     this.addChild(this._endScreen);
     this._timer.start(() => this._onEnd());
 
@@ -56,22 +56,21 @@ export default class Game extends Container {
     const patronCoords = this._map.coordsFromPos(patronMapPos);
 
     this._patron = new Patron(patronAnimations);
+
     this._patron.init(patronCoords, config.game.tileWidth, config.game.tileHeight);
 
+    this._patron.anim.anchor.set(0.5);
     viewport.follow(this._patron.anim);
 
     this.addChild(this._patron.anim);
   }
 
-  _createHerd() {
+  _createMines() {
     const minePositions = this._map.posById(this._map.IDS.MINE);
 
     minePositions.forEach((minePosition) => {
       const mineCoords = this._map.coordsFromPos(minePosition);
       const mine = new Mine(mineAnimations);
-
-      mineCoords.x = mineCoords.x + (config.game.tileWidth / 3);
-      mineCoords.y = mineCoords.y + (config.game.tileHeight / 3);
 
       mine.init(mineCoords, config.game.tileWidth / 3, config.game.tileHeight / 3);
 
@@ -80,7 +79,7 @@ export default class Game extends Container {
       mine.humpedCount = 0;
 
       this.addChild(mine.anim);
-      this._herd.push(mine);
+      this._mines.push(mine);
     });
   }
 
@@ -147,7 +146,7 @@ export default class Game extends Container {
 
     if (!hitmine) return this._patron.standStill();
 
-    const mine = this._herd.find((s) => s.row === targetPos.row && s.col === targetPos.col);
+    const mine = this._mines.find((s) => s.row === targetPos.row && s.col === targetPos.col);
 
     // remove direction
     // if (this._patron.direction !== mine.direction) return this._patron.standStill();
@@ -168,9 +167,9 @@ export default class Game extends Container {
       this._patron.standStill();
       if (mine.humpedCount >= 4) {
         this._removeMine(mine, () => {
-          if (this._herd.length === 0) return this._onEnd();
+          if (this._mines.length === 0) return this._onEnd();
 
-          return this._herd;
+          return this._mines;
         });
       }
 
@@ -195,9 +194,9 @@ export default class Game extends Container {
         mine.anim.onComplete = () => {
           // Play the point sound
           Assets.sounds.point.play();
-          const mineIndex = this._herd.indexOf(mine);
+          const mineIndex = this._mines.indexOf(mine);
 
-          this._herd.splice(mineIndex, 1);
+          this._mines.splice(mineIndex, 1);
           this.removeChild(mine.anim);
           this._map.setTileOnMap({ row: mine.row, col: mine.col }, this._map.IDS.EMPTY);
           callback();
@@ -209,7 +208,7 @@ export default class Game extends Container {
 
   _onEnd() {
     const score = this._scoreBoard.scoreValue;
-    const win = this._herd.length === 0;
+    const win = this._mines.length === 0;
     // Play Win or Lose sounds
 
     if (win === true) {
