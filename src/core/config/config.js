@@ -7,7 +7,7 @@ export default {
   view: {
     width: size,
     height: size,
-    backgroundColor: 0x000000,
+    backgroundColor: 0x779642,
     worldWidth: size * 6,
     worldHeight: size * 6,
     isHorizontal,

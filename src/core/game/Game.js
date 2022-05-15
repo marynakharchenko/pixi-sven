@@ -34,12 +34,12 @@ export default class Game extends Container {
   async start() {
     this._attachKeyboardListeners();
 
-    const background = Sprite.from('background');
-
-    background.width = config.game.width;
-    background.height = config.game.height;
-
-    this.addChild(background);
+    // const background = Sprite.from('background');
+    //
+    // background.width = config.game.width;
+    // background.height = config.game.height;
+    //
+    // this.addChild(background);
     this.addChild(this._scoreBoard.score);
     this.addChild(this._timer.timerText);
     this._createPatron();
