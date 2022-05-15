@@ -1,8 +1,15 @@
 import { Loader, AnimatedSprite } from 'pixi.js';
 import gsap from 'gsap';
 
+import CONSTANTS from '../../constants/constants';
+
 const Resources = Loader.shared.resources;
-const DIRECTIONS = ['Up', 'Down', 'Left', 'Right'];
+const DIRECTIONS = [
+  CONSTANTS.DIRECTIONS.UP,
+  CONSTANTS.DIRECTIONS.DOWN,
+  CONSTANTS.DIRECTIONS.LEFT,
+  CONSTANTS.DIRECTIONS.RIGHT,
+];
 
 export default class Entity {
   constructor(animations) {
@@ -39,7 +46,7 @@ export default class Entity {
    * @param height height
    */
   async init(position, width, height) {
-    this.anim = new AnimatedSprite(this.animations[`stand${this.direction}`]);
+    this.anim = new AnimatedSprite(this.animations[`${CONSTANTS.ACTIONS.STAND}${this.direction}`]);
     this.anim.position = position;
     // Adjust animation speed
     this.anim.animationSpeed = 0.2;
@@ -56,7 +63,7 @@ export default class Entity {
    */
   standStill(direction = this.direction) {
     this.direction = direction;
-    this.anim.textures = this.animations[`stand${this.direction}`];
+    this.anim.textures = this.animations[`${CONSTANTS.ACTIONS.STAND}${this.direction}`];
     this.anim.gotoAndStop(0);
     this.moving = false;
   }
@@ -72,7 +79,7 @@ export default class Entity {
     // Adjust the new direction
     this.direction = direction;
     // Adjust the animation based on the direction
-    this.anim.textures = this.animations[`walk${direction}`];
+    this.anim.textures = this.animations[`${CONSTANTS.ACTIONS.WALK}${direction}`];
     // Play the animation
     this.anim.gotoAndPlay(0);
 

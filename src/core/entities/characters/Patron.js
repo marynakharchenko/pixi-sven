@@ -1,4 +1,5 @@
 import Entity from './Entity';
+import CONSTANTS from '../../constants/constants';
 
 export default class Patron extends Entity {
   constructor(config, animations) {
@@ -8,7 +9,7 @@ export default class Patron extends Entity {
 
   hump(callback) {
     this.isHumping = true;
-    this.anim.textures = this.animations[`hump${this.direction}`];
+    this.anim.textures = this.animations[`${CONSTANTS.ACTIONS.HUMP}${this.direction}`];
     this.anim.gotoAndPlay(0);
 
     this.anim.onComplete = () => {

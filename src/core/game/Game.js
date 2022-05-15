@@ -3,14 +3,17 @@ import gsap from 'gsap';
 
 import patronAnimations from '../animations/patronAnimations';
 import mineAnimations from '../animations/mineAnimations';
+import bushAnimations from '../animations/bushAnimations';
 import Map from '../entities/Map';
 import Patron from '../entities/characters/Patron';
 import Mine from '../entities/characters/Mine';
+import Bush from '../entities/characters/Bush';
 import ScoreBoard from '../entities/ScoreBoard';
 import Timer from '../entities/Timer';
 import EndScreen from '../entities/EndScreen';
 
 import config from '../config/config';
+import CONSTANTS from '../constants/constants';
 import viewport from '../viewport/viewport';
 // Import the sounds
 import Assets from '../assetsManager/AssetManager';
@@ -29,6 +32,7 @@ export default class Game extends Container {
     this._timer = new Timer();
     this._endScreen = new EndScreen();
     this._mines = [];
+    this._bushes = [];
   }
 
   async start() {
@@ -44,6 +48,7 @@ export default class Game extends Container {
     this.addChild(this._timer.timerText);
     this._createPatron();
     this._createMines();
+    this._createBushes();
     this.addChild(this._endScreen);
     this._timer.start(() => this._onEnd());
 
@@ -72,6 +77,7 @@ export default class Game extends Container {
       const mineCoords = this._map.coordsFromPos(minePosition);
       const mine = new Mine(mineAnimations);
 
+      // this._patron.anim.anchor.set(0.5);
       mine.init(mineCoords, config.game.tileWidth / 3, config.game.tileHeight / 3);
 
       mine.col = minePosition.col;
@@ -80,6 +86,27 @@ export default class Game extends Container {
 
       this.addChild(mine.anim);
       this._mines.push(mine);
+    });
+  }
+
+  _createBushes() {
+    const bushesPositions = this._map.posById(this._map.IDS.BUSH);
+
+    bushesPositions.forEach((bushPositions) => {
+      const bushCoords = this._map.coordsFromPos(bushPositions);
+      const bush = new Bush(bushAnimations);
+
+      // this._patron.anim.anchor.set(0.5);
+      bushCoords.x = bushCoords.x - (config.game.tileWidth / 2);
+      bushCoords.y = bushCoords.y - (config.game.tileHeight / 2);
+      bush.init(bushCoords, config.game.tileWidth, config.game.tileHeight);
+
+      bush.col = bushPositions.col;
+      bush.row = bushPositions.row;
+      bush.humpedCount = 0;
+
+      this.addChild(bush.anim);
+      this._bushes.push(bush);
     });
   }
 
@@ -142,9 +169,9 @@ export default class Game extends Container {
     const patronPos = this._map.posById(this._map.IDS.PATRON)[0];
     const targetPos = this._map.getDestination(patronPos, patronDirection);
 
-    const hitmine = this._map.getTile(targetPos) === this._map.IDS.MINE;
+    const hitMine = this._map.getTile(targetPos) === this._map.IDS.MINE;
 
-    if (!hitmine) return this._patron.standStill();
+    if (!hitMine) return this._patron.standStill();
 
     const mine = this._mines.find((s) => s.row === targetPos.row && s.col === targetPos.col);
 
@@ -189,7 +216,7 @@ export default class Game extends Container {
         // Play the smoke sound
         Assets.sounds.puffSmoke.play();
 
-        mine.anim.textures = mine.animations.disappear;
+        mine.anim.textures = mine.animations[CONSTANTS.ACTIONS.DISAPPEAR];
         mine.anim.gotoAndPlay(0);
         mine.anim.onComplete = () => {
           // Play the point sound

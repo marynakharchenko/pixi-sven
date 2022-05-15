@@ -1,17 +1,19 @@
+import CONSTANTS from '../constants/constants';
+
 export default {
-  standLeft: [
+  [`${CONSTANTS.ACTIONS.STAND}${CONSTANTS.DIRECTIONS.LEFT}`]: [
     'patronLeft',
   ],
-  standRight: [
+  [`${CONSTANTS.ACTIONS.STAND}${CONSTANTS.DIRECTIONS.RIGHT}`]: [
     'patronRight',
   ],
-  standUp: [
+  [`${CONSTANTS.ACTIONS.STAND}${CONSTANTS.DIRECTIONS.UP}`]: [
     'patronUp',
   ],
-  standDown: [
+  [`${CONSTANTS.ACTIONS.STAND}${CONSTANTS.DIRECTIONS.DOWN}`]: [
     'patronDown',
   ],
-  walkLeft: [
+  [`${CONSTANTS.ACTIONS.WALK}${CONSTANTS.DIRECTIONS.LEFT}`]: [
     'walkLeft1',
     'walkLeft2',
     'walkLeft3',
@@ -24,7 +26,7 @@ export default {
     'walkLeft10',
     'walkLeft11',
   ],
-  walkUp: [
+  [`${CONSTANTS.ACTIONS.WALK}${CONSTANTS.DIRECTIONS.UP}`]: [
     'walkUp1',
     'walkUp2',
     'walkUp3',
@@ -37,7 +39,7 @@ export default {
     'walkUp10',
     'walkUp11',
   ],
-  walkRight: [
+  [`${CONSTANTS.ACTIONS.WALK}${CONSTANTS.DIRECTIONS.RIGHT}`]: [
     'walkRight1',
     'walkRight2',
     'walkRight3',
@@ -50,7 +52,7 @@ export default {
     'walkRight10',
     'walkRight11',
   ],
-  walkDown: [
+  [`${CONSTANTS.ACTIONS.WALK}${CONSTANTS.DIRECTIONS.DOWN}`]: [
     'walkDown1',
     'walkDown2',
     'walkDown3',
@@ -63,28 +65,28 @@ export default {
     'walkDown10',
     'walkDown11',
   ],
-  humpLeft: [
+  [`${CONSTANTS.ACTIONS.HUMP}${CONSTANTS.DIRECTIONS.LEFT}`]: [
     'humpLeft1',
     'humpLeft2',
     'humpLeft3',
     'humpLeft4',
     'humpLeft5',
   ],
-  humpDown: [
+  [`${CONSTANTS.ACTIONS.HUMP}${CONSTANTS.DIRECTIONS.DOWN}`]: [
     'humpDown1',
     'humpDown2',
     'humpDown3',
     'humpDown4',
     'humpDown5',
   ],
-  humpRight: [
+  [`${CONSTANTS.ACTIONS.HUMP}${CONSTANTS.DIRECTIONS.RIGHT}`]: [
     'humpRight1',
     'humpRight2',
     'humpRight3',
     'humpRight4',
     'humpRight5',
   ],
-  humpUp: [
+  [`${CONSTANTS.ACTIONS.HUMP}${CONSTANTS.DIRECTIONS.UP}`]: [
     'humpUp1',
     'humpUp2',
     'humpUp3',

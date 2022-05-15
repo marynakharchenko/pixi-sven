@@ -1,17 +1,19 @@
+import CONSTANTS from '../constants/constants';
+
 export default {
-  standLeft: [
+  [`${CONSTANTS.ACTIONS.STAND}${CONSTANTS.DIRECTIONS.LEFT}`]: [
     'mineLeft',
   ],
-  standRight: [
+  [`${CONSTANTS.ACTIONS.STAND}${CONSTANTS.DIRECTIONS.RIGHT}`]: [
     'mineRight',
   ],
-  standUp: [
+  [`${CONSTANTS.ACTIONS.STAND}${CONSTANTS.DIRECTIONS.UP}`]: [
     'mineUp',
   ],
-  standDown: [
+  [`${CONSTANTS.ACTIONS.STAND}${CONSTANTS.DIRECTIONS.DOWN}`]: [
     'mineDown',
   ],
-  disappear: [
+  [CONSTANTS.ACTIONS.DISAPPEAR]: [
     'mineDisappear1',
     'mineDisappear2',
     'mineDisappear3',
