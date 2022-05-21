@@ -17,7 +17,7 @@ export default class Bush extends Entity {
    */
   async init(position, width, height) {
     const animationName = `${CONSTANTS.ACTIONS.STAND}${Math.floor(Math.random() * Object.keys(bushAnimations).length)}`;
-    console.log(animationName)
+
     this.anim = new AnimatedSprite(this.animations[animationName]);
     this.anim.position = position;
     // Don't loop it at initial state

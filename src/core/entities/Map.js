@@ -65,6 +65,7 @@ export default class Map {
       BUSH: B,
     };
 
+    this._mapStart = JSON.parse(JSON.stringify(LEVEL1));
     this._map = LEVEL1;
   }
 
@@ -76,6 +77,16 @@ export default class Map {
      */
   getTile({ row, col }) {
     return this._map[row][col];
+  }
+
+  /**
+     * returns the tileId on a given position
+     * @returns int
+     * @param {int} pos.row
+     * @param {int} pos.col
+     */
+  getTileStart({ row, col }) {
+    return this._mapStart[row][col];
   }
 
   /**
@@ -147,6 +158,6 @@ export default class Map {
   }
 
   collide({ row, col }) {
-    return this._map[row][col] !== E;
+    return ![E, M].includes(this._map[row][col]);
   }
 }

@@ -165,11 +165,11 @@ export default class Game extends Container {
   }
 
   _patronHump() {
-    const patronDirection = this._patron.direction;
-    const patronPos = this._map.posById(this._map.IDS.PATRON)[0];
-    const targetPos = this._map.getDestination(patronPos, patronDirection);
+    // const patronDirection = this._patron.direction;
+    // const patronPos = this._map.posById(this._map.IDS.PATRON)[0];
+    const targetPos = this._map.posById(this._map.IDS.PATRON)[0]; // this._map.getDestination(patronPos, patronDirection);
 
-    const hitMine = this._map.getTile(targetPos) === this._map.IDS.MINE;
+    const hitMine = this._map.getTileStart(targetPos) === this._map.IDS.MINE;
 
     if (!hitMine) return this._patron.standStill();
 
@@ -178,9 +178,9 @@ export default class Game extends Container {
     // remove direction
     // if (this._patron.direction !== mine.direction) return this._patron.standStill();
 
-    if (this._patron.isHumping) return this._patron.standStill();
+    // if (this._patron.isHumping) return this._patron.standStill();
 
-    if (mine.humpedCount >= 4) return this._patron.standStill();
+    if (mine.humpedCount >= 1) return this._patron.standStill();
 
     mine.anim.visible = false;
 
@@ -192,7 +192,7 @@ export default class Game extends Container {
       mine.humpedCount++;
       mine.anim.visible = true;
       this._patron.standStill();
-      if (mine.humpedCount >= 4) {
+      if (mine.humpedCount >= 1) {
         this._removeMine(mine, () => {
           if (this._mines.length === 0) return this._onEnd();
 
@@ -210,7 +210,7 @@ export default class Game extends Container {
     gsap.to(mine.anim, {
       alpha: 0.4,
       duration: 0.5,
-      repeat: 3,
+      repeat: 1,
       yoyo: true,
       onComplete: () => {
         // Play the smoke sound
