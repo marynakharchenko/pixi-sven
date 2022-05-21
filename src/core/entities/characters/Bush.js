@@ -1,5 +1,6 @@
 import { AnimatedSprite } from 'pixi.js';
 import CONSTANTS from '../../constants/constants';
+import bushAnimations from '../../animations/bushAnimations';
 
 import Entity from './Entity';
 
@@ -15,7 +16,9 @@ export default class Bush extends Entity {
    * @param height height
    */
   async init(position, width, height) {
-    this.anim = new AnimatedSprite(this.animations[CONSTANTS.ACTIONS.STAND]);
+    const animationName = `${CONSTANTS.ACTIONS.STAND}${Math.floor(Math.random() * Object.keys(bushAnimations).length)}`;
+    console.log(animationName)
+    this.anim = new AnimatedSprite(this.animations[animationName]);
     this.anim.position = position;
     // Don't loop it at initial state
     this.anim.loop = false;
