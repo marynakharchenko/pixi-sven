@@ -9,6 +9,6 @@ export default {
     DISAPPEAR: 'disappear',
     STAND: 'stand',
     WALK: 'walk',
-    HUMP: 'hump',
+    DEMINE: 'demine',
   },
 };

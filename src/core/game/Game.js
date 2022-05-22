@@ -1,4 +1,4 @@
-import { Container, Sprite } from 'pixi.js';
+import { Container } from 'pixi.js';
 import gsap from 'gsap';
 
 import patronAnimations from '../animations/patronAnimations';
@@ -86,7 +86,7 @@ export default class Game extends Container {
 
       mine.col = minePosition.col;
       mine.row = minePosition.row;
-      mine.humpedCount = 0;
+      mine.deminedCount = 0;
 
       this.addChild(mine.anim);
       this._mines.push(mine);
@@ -107,7 +107,7 @@ export default class Game extends Container {
 
       bush.col = bushPositions.col;
       bush.row = bushPositions.row;
-      bush.humpedCount = 0;
+      bush.deminedCount = 0;
 
       this.addChild(bush.anim);
       this._bushes.push(bush);
@@ -144,7 +144,7 @@ export default class Game extends Container {
     }
 
     if (this._pressedKeys.includes('Space')) {
-      this._patronHump();
+      this._patronDemine();
 
       return;
     }
@@ -168,7 +168,7 @@ export default class Game extends Container {
     return this._patronAction();
   }
 
-  _patronHump() {
+  _patronDemine() {
     // const patronDirection = this._patron.direction;
     // const patronPos = this._map.posById(this._map.IDS.PATRON)[0];
     const targetPos = this._map.posById(this._map.IDS.PATRON)[0]; // this._map.getDestination(patronPos, patronDirection);
@@ -182,20 +182,20 @@ export default class Game extends Container {
     // remove direction
     // if (this._patron.direction !== mine.direction) return this._patron.standStill();
 
-    // if (this._patron.isHumping) return this._patron.standStill();
+    // if (this._patron.isDemining) return this._patron.standStill();
 
-    if (mine.humpedCount >= 1) return this._patron.standStill();
+    if (mine.deminedCount >= 1) return this._patron.standStill();
 
     mine.anim.visible = false;
 
     this._scoreBoard.update(3); // 3 points
-    // Play the hump sound
-    if (!Assets.sounds.hump.playing()) Assets.sounds.hump.play();
+    // Play the demine sound
+    if (!Assets.sounds.demine.playing()) Assets.sounds.demine.play();
 
-    this._patron.hump(() => {
-      mine.humpedCount++;
+    this._patron.demine(() => {
+      mine.deminedCount++;
       mine.anim.visible = true;
-      if (mine.humpedCount >= 1) {
+      if (mine.deminedCount >= 1) {
         this._removeMine(mine, () => {
           if (this._mines.length === 0) return this._onEnd();
 
@@ -204,7 +204,7 @@ export default class Game extends Container {
       }
     });
 
-    return mine.humpedCount;
+    return mine.deminedCount;
   }
 
   _removeMine(mine, callback) {
@@ -228,6 +228,7 @@ export default class Game extends Container {
           this.removeChild(mine.anim);
           const patronPos = this._map.posById(this._map.IDS.PATRON)[0];
           // patron on mine
+
           if (patronPos.row === mine.row && patronPos.col === mine.col) {
             this._map.setTileOnMap({ row: mine.row, col: mine.col }, this._map.IDS.PATRON);
           } else {

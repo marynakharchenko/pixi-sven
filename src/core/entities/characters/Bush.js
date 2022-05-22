@@ -26,9 +26,4 @@ export default class Bush extends Entity {
     if (width) this.anim.width = width;
     if (height) this.anim.height = height;
   }
-
-  standStill(direction = this.direction) {
-    this.anim.textures = this.animations[CONSTANTS.ACTIONS.STAND];
-    this.anim.gotoAndStop(0);
-  }
 }

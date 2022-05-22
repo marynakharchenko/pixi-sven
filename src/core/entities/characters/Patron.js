@@ -4,12 +4,12 @@ import CONSTANTS from '../../constants/constants';
 export default class Patron extends Entity {
   constructor(config, animations) {
     super(config, animations);
-    // this.isHumping = false;
+    // this.isDemining = false;
   }
 
-  hump(callback) {
-    // this.isHumping = true;
-    this.anim.textures = this.animations[`${CONSTANTS.ACTIONS.HUMP}${this.direction}`];
+  demine(callback) {
+    // this.isDemining = true;
+    this.anim.textures = this.animations[`${CONSTANTS.ACTIONS.DEMINE}${this.direction}`];
     this.anim.gotoAndPlay(0);
     callback();
   }
