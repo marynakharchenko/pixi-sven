@@ -1,4 +1,4 @@
-import Application from './core/Application';
+import Application from './core/app/Application';
 import * as PIXI from 'pixi.js';
 
 if (process.env.NODE_ENV === 'development') {
