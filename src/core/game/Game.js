@@ -48,6 +48,7 @@ export default class Game extends Container {
     // this.addChild(background);
     this.addChild(this._scoreBoard.score);
     this.addChild(this._timer.timerText);
+    this._createFence();
     this._createPatron();
     this._createMines();
     this._createBushes();
@@ -56,6 +57,35 @@ export default class Game extends Container {
 
     // Start the background loop
     Assets.sounds.background.play();
+  }
+
+  _createFence() {
+    const fenceWidth = this._map._map[0].length + (config.game.fenceSize * 2); // left/right
+    const fenceHeight = this._map._map.length + (config.game.fenceSize * 2); // up/down
+
+    for (let col = 0; col < fenceWidth; col++) {
+      for (let row = 0; row < fenceHeight; row++) {
+        if (
+          col < config.game.fenceSize
+            || col >= fenceWidth - config.game.fenceSize
+            || row < config.game.fenceSize
+            || row >= fenceHeight - config.game.fenceSize
+        ) {
+          const bushPositions = { row: row - config.game.fenceSize, col: col - config.game.fenceSize };
+          const bushCoords = this._map.coordsFromPos(bushPositions);
+          const bush = new Bush(bushAnimations);
+
+          bushCoords.x = bushCoords.x - (config.game.tileWidth / 2);
+          bushCoords.y = bushCoords.y - (config.game.tileHeight / 2);
+          bush.init(bushCoords, config.game.tileWidth, config.game.tileHeight);
+
+          bush.col = bushPositions.col;
+          bush.row = bushPositions.row;
+
+          this.addChild(bush.anim);
+        }
+      }
+    }
   }
 
   _createPatron() {
@@ -107,7 +137,6 @@ export default class Game extends Container {
 
       bush.col = bushPositions.col;
       bush.row = bushPositions.row;
-      bush.deminedCount = 0;
 
       this.addChild(bush.anim);
       this._bushes.push(bush);
