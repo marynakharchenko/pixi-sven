@@ -1,5 +1,5 @@
-import { Container, Text, TextStyle, Loader, Sprite } from 'pixi.js';
-const Resources = Loader.shared.resources;
+import { Container, Text, TextStyle } from 'pixi.js';
+// const Resources = Loader.shared.resources;
 
 const Texts = {
   YOU_WIN: 'Congratulations you win!',
@@ -10,7 +10,7 @@ export default class EndScreen extends Container {
   constructor() {
     super();
     this.visible = false;
-    this._createBackground();
+    // this._createBackground();
     this._createText();
   }
 
@@ -53,10 +53,10 @@ export default class EndScreen extends Container {
     this.addChild(this.label, this.score);
   }
 
-  _createBackground() {
-    const backgroundTexture = Resources.endBackground.texture;
-    const background = new Sprite(backgroundTexture);
-
-    this.addChild(background);
-  }
+  // _createBackground() {
+  //   const backgroundTexture = Resources.endBackground.texture;
+  //   const background = new Sprite(backgroundTexture);
+  //
+  //   this.addChild(background);
+  // }
 }
