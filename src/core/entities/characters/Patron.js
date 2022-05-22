@@ -11,11 +11,6 @@ export default class Patron extends Entity {
     // this.isHumping = true;
     this.anim.textures = this.animations[`${CONSTANTS.ACTIONS.HUMP}${this.direction}`];
     this.anim.gotoAndPlay(0);
-
-    this.anim.onComplete = () => {
-      this.anim.onComplete = null; // Detach the listener
-      // this.isHumping = false;
-      callback();
-    };
+    callback();
   }
 }

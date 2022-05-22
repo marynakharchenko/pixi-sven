@@ -36,6 +36,8 @@ export default class Game extends Container {
   }
 
   async start() {
+    // Set to use zIndex
+    this.sortableChildren = true;
     this._attachKeyboardListeners();
 
     // const background = Sprite.from('background');
@@ -78,6 +80,8 @@ export default class Game extends Container {
       const mine = new Mine(mineAnimations);
 
       // this._patron.anim.anchor.set(0.5);
+      mineCoords.x = mineCoords.x - (config.game.tileWidth / 6);
+      // mineCoords.y = mineCoords.y - (config.game.tileHeight / 6);
       mine.init(mineCoords, config.game.tileWidth / 3, config.game.tileHeight / 3);
 
       mine.col = minePosition.col;
@@ -191,7 +195,6 @@ export default class Game extends Container {
     this._patron.hump(() => {
       mine.humpedCount++;
       mine.anim.visible = true;
-      this._patron.standStill();
       if (mine.humpedCount >= 1) {
         this._removeMine(mine, () => {
           if (this._mines.length === 0) return this._onEnd();
@@ -199,8 +202,6 @@ export default class Game extends Container {
           return this._mines;
         });
       }
-
-      this._patronAction();
     });
 
     return mine.humpedCount;
@@ -225,7 +226,13 @@ export default class Game extends Container {
 
           this._mines.splice(mineIndex, 1);
           this.removeChild(mine.anim);
-          this._map.setTileOnMap({ row: mine.row, col: mine.col }, this._map.IDS.EMPTY);
+          const patronPos = this._map.posById(this._map.IDS.PATRON)[0];
+          // patron on mine
+          if (patronPos.row === mine.row && patronPos.col === mine.col) {
+            this._map.setTileOnMap({ row: mine.row, col: mine.col }, this._map.IDS.PATRON);
+          } else {
+            this._map.setTileOnMap({ row: mine.row, col: mine.col }, this._map.IDS.EMPTY);
+          }
           callback();
           mine.anim.onComplete = null; // Detach the listener
         };
